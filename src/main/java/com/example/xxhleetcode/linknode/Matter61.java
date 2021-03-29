@@ -9,13 +9,16 @@ import java.util.Set;
 /**
  * @Author: elyuan
  * @Date: 2021/3/27 3:24 下午
+ * 主要是闭环来解决这个问题  或者快慢指针方法
  */
 public class Matter61 {
 
 
     public static void main(String[] args) {
+
+
         ///[1,2,3,4,5]
-        Integer[] array = {1,2};
+        Integer[] array = {1,2,3};
         ListNode currNode = new ListNode();
         ListNode firstNode = new ListNode(0,currNode);
         int index =0;
@@ -28,11 +31,46 @@ public class Matter61 {
             }
         }
         System.out.println(firstNode.next);
-        ListNode listNode = rotateRight(firstNode.next, 2);
+        ListNode listNode = rotateRight1(firstNode.next, 2);
         System.out.println(listNode);
 
 
     }
+
+
+    private static ListNode rotateRight1(ListNode head,int k){
+        if(k == 0 || head == null || head.next == null){
+            return head;
+        }
+        int n = 1;
+        ListNode iter = head;
+        while (iter.next !=null){
+            iter = iter.next;
+            n ++;
+        }
+        int add = n -k & n;
+        if(add == n){
+            return head;
+        }
+        iter.next = head;
+        while (add-->0){
+            iter = iter.next;
+        }
+        ListNode ret = iter.next;
+        iter.next = null;
+        return ret;
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
