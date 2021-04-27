@@ -1,0 +1,2 @@
+com.example.xxhleetcode.common.spi.AlipayService
+com.example.xxhleetcode.common.spi.WeixinpayService

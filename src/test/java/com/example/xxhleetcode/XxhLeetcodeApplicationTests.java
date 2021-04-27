@@ -1,13 +1,26 @@
 package com.example.xxhleetcode;
 
-import org.junit.jupiter.api.Test;
+import com.example.xxhleetcode.mybatis.service.User;
+import com.example.xxhleetcode.mybatis.service.UserService;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
 
 @SpringBootTest
-class XxhLeetcodeApplicationTests {
+@RunWith(SpringRunner.class)
+public class XxhLeetcodeApplicationTests {
+
+    @Autowired
+    private UserService userService;
 
     @Test
-    void contextLoads() {
+    public void contextLoads() {
+        List<User> list = userService.list();
+        list.stream().forEach(System.out::println);
     }
 
 }
