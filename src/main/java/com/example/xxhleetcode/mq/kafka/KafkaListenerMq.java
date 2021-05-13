@@ -1,8 +1,12 @@
 package com.example.xxhleetcode.mq.kafka;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author: elyuan
@@ -13,8 +17,11 @@ import org.springframework.stereotype.Component;
 public class KafkaListenerMq {
 
 
-    @KafkaListener(topics = "#{'${kafka.producer.topic}'}")
-    public void listen(String input) {
-        log.info("接受到kafka消息: {}" , input);
+    @KafkaListener(topics = "#{'${kafka.producer.topic}'}",containerFactory = "listenerContainerFactory")
+    public void listen(ConsumerRecord<?, ?> record,Acknowledgment ack) throws InterruptedException {
+        log.info("接受到kafka消息: record{},ack:{}" , record);
+        TimeUnit.MILLISECONDS.sleep(200);
+        ack.acknowledge();
+        // Acknowledgment ack
     }
 }

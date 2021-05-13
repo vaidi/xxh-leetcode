@@ -8,12 +8,15 @@ import org.junit.runner.RunWith;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.concurrent.ListenableFuture;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
@@ -27,6 +30,7 @@ public class XxhLeetcodeApplicationTests {
     private UserService userService;
 
     @Autowired
+    @Qualifier("kafkaTemplate1")
     private KafkaTemplate kafkaTemplate;
 
 
@@ -71,15 +75,24 @@ public class XxhLeetcodeApplicationTests {
 
     @Test
     public void contextLoads() {
-        IntStream.range(1,100).forEach(e->{
+        IntStream.range(1,1000).forEach(e->{
             try {
                 System.out.println("开始发送mq消息");
                 TimeUnit.MILLISECONDS.sleep(1);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
-            kafkaTemplate.send(kafkaTopic,3,"key","消息:"+e);
-            //kafkaTemplate.send(kafkaTopic,"消息:::"+e);
+            kafkaTemplate.send(kafkaTopic, "消息:::" + e);
+            //kafkaTemplate.send(kafkaTopic,3,"key","消息:"+e);
+//            ListenableFuture send = kafkaTemplate.send(kafkaTopic, "消息:::" + e);
+//            try {
+//                Object o = send.get();
+//                System.out.println("o:"+o.toString());
+//            } catch (InterruptedException ex) {
+//                ex.printStackTrace();
+//            } catch (ExecutionException ex) {
+//                ex.printStackTrace();
+//            }
         });
     }
 
